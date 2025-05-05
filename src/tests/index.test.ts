@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { CoingeckoSimplePriceApi } from "./index";
+import { CoingeckoSimplePriceApi } from "../index";
 
 test("test bitcoin price", async () => {
   const priceApi = new CoingeckoSimplePriceApi();
