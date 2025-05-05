@@ -1,0 +1,39 @@
+{
+  "name": "donut-sdk",
+  "version": "0.1.0",
+  "author": "Donut Devs",
+  "description": "Donut SDK for crypto trading",
+  "keywords": [
+    "donut",
+    "crypto",
+    "cryptocurrency",
+    "trade"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "test": "vitest run",
+    "fmt": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}' --cache"
+  },
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  }
+}
