@@ -1,1 +1,1 @@
-export * from "./simplePrice";
+export * from "./tokens";
