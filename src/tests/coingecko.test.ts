@@ -6,7 +6,6 @@ test("get uniswap", async () => {
 
   const token = await priceApi.getTokenInfo("uniswap");
   expect(token).toBeTruthy();
-
   console.log(token);
 });
 
@@ -15,6 +14,5 @@ test("get raydium", async () => {
 
   const token = await priceApi.getTokenInfo("raydium");
   expect(token).toBeTruthy();
-
   console.log(token);
 });

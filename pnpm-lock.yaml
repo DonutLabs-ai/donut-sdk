@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@jup-ag/api':
+        specifier: ^6.0.41
+        version: 6.0.41
       '@types/node':
         specifier: 22.15.3
         version: 22.15.3
@@ -197,6 +200,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jup-ag/api@6.0.41':
+    resolution: {integrity: sha512-u+eFVzw/dqlP1MBYYa9Ak39PTPMJjV8mHh2cZ3GkWQLBhoXFE8FkNMsKUJcYwLUkFHSz1kIOCNhDfxAjvwGuwg==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -913,6 +919,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jup-ag/api@6.0.41': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
