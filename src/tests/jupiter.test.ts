@@ -1,7 +1,7 @@
-import { createJupiterApiClient } from "../index";
+import { createJupiterApiClient } from "@jup-ag/api";
 import { expect, test } from "vitest";
 
-test("jupiter api client wworks", async () => {
+test("jupiter api client works", async () => {
   const jupiterClient = createJupiterApiClient();
   const sol = "So11111111111111111111111111111111111111112";
   const raydium = "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R";

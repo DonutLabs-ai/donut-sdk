@@ -10,11 +10,10 @@ export class CoingeckoPriceApi {
     this.apiKey = apiKey;
   }
 
-  async getTokenList(): Promise<
-    Record<string, Set<CoingeckoTokenId>> | undefined
-  > {
+  async getTokenList(): Promise<CoingeckoSupportedTokens | undefined> {
     const tokenIdRecord: Record<string, Set<CoingeckoTokenId>> = {};
     const endpoint = this.api + "coins/list";
+    const tokenNames: Set<string> = new Set();
 
     const options: RequestInit = {
       method: "GET",
@@ -25,6 +24,7 @@ export class CoingeckoPriceApi {
       .then((res) => res.json() as any)
       .then((json) => {
         for (const item of json) {
+          tokenNames.add(item.id);
           let tokenIdSet = tokenIdRecord[item.symbol as string];
           if (tokenIdSet) {
             tokenIdSet.add(item as CoingeckoTokenId);
@@ -34,7 +34,11 @@ export class CoingeckoPriceApi {
 
           tokenIdRecord[item.symbol as string] = tokenIdSet;
         }
-        return tokenIdRecord;
+
+        return {
+          tickerKey: tokenIdRecord,
+          nameKey: tokenNames,
+        };
       })
       .catch<undefined>((err) => {
         console.error(err);
@@ -101,6 +105,11 @@ export class CoingeckoPriceApi {
 
     return response;
   }
+}
+
+export interface CoingeckoSupportedTokens {
+  tickerKey: Record<string, Set<CoingeckoTokenId>>;
+  nameKey: Set<string>;
 }
 
 export interface CoingeckoTokenId {
