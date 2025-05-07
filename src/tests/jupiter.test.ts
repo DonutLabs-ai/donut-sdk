@@ -14,5 +14,5 @@ test("jupiter api client wworks", async () => {
   });
 
   expect(quote).toBeTruthy();
-  expect(quote.inputMint).toBeCloseTo(amount);
+  expect(quote.inAmount).toBeCloseTo(amount);
 });
