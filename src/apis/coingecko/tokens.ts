@@ -11,40 +11,100 @@ export class CoingeckoPriceApi {
   }
 
   async getTokenList(): Promise<CoingeckoSupportedTokens | undefined> {
-    const tokenIdRecord: Record<string, Set<CoingeckoTokenId>> = {};
-    const endpoint = this.api + "coins/list";
-    const tokenNames: Set<string> = new Set();
+    const tokenTickers: Set<string> = new Set();
+    const duplicateTickers: Set<string> = new Set();
+    const endpoint = this.api + "coins/list?include_platform=true";
+    const tokenNameToAddress: Record<string, CoingeckoTokenId> = {};
+    const tokenTickerToAddress: Record<string, CoingeckoTokenId> = {};
+    const tokenAddressToName: Record<string, CoingeckoTokenId> = {};
+    // make native solana address sol
+    const solAddr = "sol";
 
     const options: RequestInit = {
       method: "GET",
       headers: { accept: "application/json", "x-cg-demo-api-key": this.apiKey },
     };
 
-    const res = fetch(endpoint, options)
+    const tokenList = await fetch(endpoint, options)
       .then((res) => res.json() as any)
       .then((json) => {
         for (const item of json) {
-          tokenNames.add(item.id);
-          let tokenIdSet = tokenIdRecord[item.symbol as string];
-          if (tokenIdSet) {
-            tokenIdSet.add(item as CoingeckoTokenId);
-          } else {
-            tokenIdSet = new Set([item as CoingeckoTokenId]);
+          if (item.platforms.solana || item.id === "solana") {
+            const token: CoingeckoTokenId = {
+              id: item.id,
+              ticker: item.symbol,
+              solana_address: "",
+            };
+            if (tokenTickers.has(item.symbol)) {
+              duplicateTickers.add(item.symbol);
+            } else {
+              tokenTickers.add(item.symbol);
+            }
+            if (item.id == "solana") {
+              token.solana_address = solAddr;
+              tokenTickerToAddress[item.symbol] = token;
+              tokenAddressToName[solAddr] = token;
+              tokenNameToAddress[item.id] = token;
+            } else {
+              token.solana_address = item.platforms.solana;
+              tokenAddressToName[item.platforms.solana] = token;
+              tokenTickerToAddress[item.symbol] = token;
+              tokenNameToAddress[item.id] = token;
+            }
           }
-
-          tokenIdRecord[item.symbol as string] = tokenIdSet;
         }
 
         return {
-          tickerKey: tokenIdRecord,
-          nameKey: tokenNames,
+          duplicateTickers,
         };
       })
       .catch<undefined>((err) => {
         console.error(err);
         return undefined;
       });
-    return res;
+
+    if (!tokenList) {
+      return tokenList;
+    }
+
+    const pageSize = 50;
+    const dupArray = Array.from(tokenList.duplicateTickers.values());
+    // split into arrays of 100 tickers for call
+    const setTickers = dupArray.reduce<Array<Array<string>>>((acc, _, i) => {
+      if (i % 100 === 0) {
+        acc.push(dupArray.slice(i, i + pageSize));
+      }
+      return acc;
+    }, []);
+
+    for (const tickers of setTickers) {
+      const tickerResult = tickers.join(",");
+      // need to choose which to use for duplicate tickers
+      const dupEndpoint =
+        this.api +
+        `coins/markets?vs_currency=usd&symbols=${tickerResult}&include_tokens=top`;
+
+      await fetch(dupEndpoint, options)
+        .then((res) => res.json() as any)
+        .then((json) => {
+          for (const dupItem of json) {
+            const val = tokenNameToAddress[dupItem.id];
+            if (val) {
+              tokenTickerToAddress[dupItem.symbol] = val;
+            }
+          }
+        })
+        .catch<undefined>((err) => {
+          console.error(err);
+          return undefined;
+        });
+    }
+
+    return {
+      tickerToToken: tokenTickerToAddress,
+      nameToToken: tokenNameToAddress,
+      addressToToken: tokenAddressToName,
+    };
   }
 
   async getTokenInfo(
@@ -108,14 +168,15 @@ export class CoingeckoPriceApi {
 }
 
 export interface CoingeckoSupportedTokens {
-  tickerKey: Record<string, Set<CoingeckoTokenId>>;
-  nameKey: Set<string>;
+  tickerToToken: Record<string, CoingeckoTokenId>;
+  nameToToken: Record<string, CoingeckoTokenId>;
+  addressToToken: Record<string, CoingeckoTokenId>;
 }
 
 export interface CoingeckoTokenId {
   id: string;
-  symbol: string;
-  name: string;
+  ticker: string;
+  solana_address: string;
 }
 
 export interface CoingeckoTokenInfo {

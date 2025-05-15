@@ -7,13 +7,14 @@ import { QuoteResponse, SwapApi } from "@jup-ag/api";
 import { DAS, Helius } from "helius-sdk";
 
 export async function aggregateDataFromId(
-  coingeckoId: string,
+  coingeckoTokenId: string,
   tokenList: CoingeckoSupportedTokens,
   coingeckoApi: CoingeckoPriceApi,
   jupiterClient?: SwapApi,
   heliusClient?: Helius,
 ): Promise<DonutData | null> {
-  if (!tokenList.nameKey.has(coingeckoId)) {
+  const coingeckoId = coingeckoTokenId.toLowerCase();
+  if (!tokenList.nameToToken[coingeckoId]) {
     // coingecko id invalid
     return null;
   }
@@ -23,7 +24,7 @@ export async function aggregateDataFromId(
   let jupiterInfo = null;
   let heliusInfo = null;
 
-  // solana data collection
+  // solana specific data
   if (tokenInfo?.basicInfo.address && tokenInfo.basicInfo.chain === "solana") {
     const address = tokenInfo.basicInfo.address;
     const sol = "So11111111111111111111111111111111111111112";
@@ -53,6 +54,16 @@ export async function aggregateDataFromId(
     heliusData: heliusInfo,
   };
   return aggData;
+}
+
+export async function aggregateDataFromSymbol(
+  coingeckoTicker: string,
+  tokenList: CoingeckoSupportedTokens,
+  coingeckoApi: CoingeckoPriceApi,
+  jupiterClient?: SwapApi,
+  heliusClient?: Helius,
+): Promise<DonutData | null> {
+  return null;
 }
 
 export interface DonutData {

@@ -14,3 +14,11 @@ test("get raydium", async () => {
   const token = await priceApi.getTokenInfo("raydium");
   expect(token).toBeTruthy();
 });
+
+// need api key for this test
+/*test("get token list", async () => {
+  const priceApi = new CoingeckoPriceApi();
+
+  const token = await priceApi.getTokenList();
+  expect(token).toBeTruthy();
+});*/
