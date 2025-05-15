@@ -29,7 +29,7 @@ export class CoingeckoPriceApi {
       .then((res) => res.json() as any)
       .then((json) => {
         for (const item of json) {
-          if (item.platforms.solana || item.id === "solana") {
+          if (item.platforms.solana) {
             const token: CoingeckoTokenId = {
               id: item.id,
               ticker: item.symbol,
@@ -40,17 +40,10 @@ export class CoingeckoPriceApi {
             } else {
               tokenTickers.add(item.symbol);
             }
-            if (item.id == "solana") {
-              token.solana_address = solAddr;
-              tokenTickerToAddress[item.symbol] = token;
-              tokenAddressToName[solAddr] = token;
-              tokenNameToAddress[item.id] = token;
-            } else {
-              token.solana_address = item.platforms.solana;
-              tokenAddressToName[item.platforms.solana] = token;
-              tokenTickerToAddress[item.symbol] = token;
-              tokenNameToAddress[item.id] = token;
-            }
+            token.solana_address = item.platforms.solana;
+            tokenAddressToName[item.platforms.solana] = token;
+            tokenTickerToAddress[item.symbol] = token;
+            tokenNameToAddress[item.id] = token;
           }
         }
 
@@ -69,7 +62,7 @@ export class CoingeckoPriceApi {
 
     const pageSize = 50;
     const dupArray = Array.from(tokenList.duplicateTickers.values());
-    // split into arrays of 100 tickers for call
+    // split into arrays of tickers, request size maxes out at pageSize
     const setTickers = dupArray.reduce<Array<Array<string>>>((acc, _, i) => {
       if (i % 100 === 0) {
         acc.push(dupArray.slice(i, i + pageSize));
