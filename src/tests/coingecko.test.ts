@@ -22,3 +22,12 @@ test("get raydium", async () => {
   const token = await priceApi.getTokenList();
   expect(token).toBeTruthy();
 });*/
+
+test("batch request", async () => {
+  const priceApi = new CoingeckoPriceApi();
+
+  const tokens = await priceApi.getBatchMarketInfo(["bitcoin", "ethereum"]);
+  expect(tokens).toBeTruthy();
+
+  console.log(tokens);
+});
