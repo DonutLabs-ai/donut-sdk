@@ -1,6 +1,6 @@
 {
   "name": "donut-sdk",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Donut Devs",
   "description": "Donut SDK for crypto trading",
   "keywords": [
@@ -20,7 +20,9 @@
       "import": "./dist/index.mjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "test": "vitest run",

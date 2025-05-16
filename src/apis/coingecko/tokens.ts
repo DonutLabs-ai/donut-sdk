@@ -161,7 +161,7 @@ export class CoingeckoPriceApi {
 
   async getBatchMarketInfo(
     identifiers: string[],
-  ): Promise<CoinMarket | undefined> {
+  ): Promise<CoinMarket[] | undefined> {
     if (identifiers.length > 100) {
       return undefined;
     }
@@ -175,7 +175,7 @@ export class CoingeckoPriceApi {
     const response = fetch(endpoint, options)
       .then((res) => res.json() as any)
       .then((json) => {
-        return json as CoinMarket;
+        return json as CoinMarket[];
       })
       .catch<undefined>((err) => {
         console.error(err);
