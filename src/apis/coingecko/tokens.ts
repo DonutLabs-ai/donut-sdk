@@ -101,10 +101,7 @@ export class CoingeckoPriceApi {
     };
   }
 
-  async getTokenInfo(
-    tokenId: string,
-    currencyId = "usd",
-  ): Promise<CoinFullInfo | undefined> {
+  async getTokenInfo(tokenId: string): Promise<CoinFullInfo | undefined> {
     const endpoint = this.api + `coins/${tokenId}`;
     const options: RequestInit = {
       method: "GET",
