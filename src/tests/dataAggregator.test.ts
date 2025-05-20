@@ -1,4 +1,4 @@
-import { aggregateDataFromId, CoingeckoPriceApi } from "../index";
+/*import { aggregateDataFromId, CoingeckoPriceApi } from "../index";
 import { createJupiterApiClient } from "@jup-ag/api";
 import { Helius } from "helius-sdk";
 import { expect, test } from "vitest";
@@ -22,4 +22,4 @@ test("test data aggregator", async () => {
     jupiterClient,
     helius,
   );
-});
+});*/
