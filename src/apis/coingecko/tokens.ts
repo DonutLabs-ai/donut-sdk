@@ -17,8 +17,6 @@ export class CoingeckoPriceApi {
     const tokenNameToAddress: Record<string, CoingeckoTokenId> = {};
     const tokenTickerToAddress: Record<string, CoingeckoTokenId> = {};
     const tokenAddressToName: Record<string, CoingeckoTokenId> = {};
-    // make native solana address sol
-    const solAddr = "sol";
 
     const options: RequestInit = {
       method: "GET",
@@ -124,12 +122,14 @@ export class CoingeckoPriceApi {
 
   async getBatchMarketInfo(
     identifiers: string[],
+    currency: string = "usd",
   ): Promise<CoinMarket[] | undefined> {
     if (identifiers.length > 100) {
       return undefined;
     }
     const endpoint =
-      this.api + `coins/markets?vs_currency=usd&ids=${identifiers.join(",")}`;
+      this.api +
+      `coins/markets?vs_currency=${currency}&ids=${identifiers.join(",")}`;
     const options: RequestInit = {
       method: "GET",
       headers: { accept: "application/json", "x-cg-demo-api-key": this.apiKey },
@@ -139,6 +139,58 @@ export class CoingeckoPriceApi {
       .then((res) => res.json() as any)
       .then((json) => {
         return json as CoinMarket[];
+      })
+      .catch<undefined>((err) => {
+        console.error(err);
+        return undefined;
+      });
+
+    return response;
+  }
+
+  async getHistoricalChart(
+    identifier: string,
+    days: number,
+    currency: string = "usd",
+  ): Promise<CoinMarketChartResponse | undefined> {
+    const endpoint =
+      this.api +
+      `coins/${identifier}/market_chart?vs_currency=${currency}&days=${days}`;
+    const options: RequestInit = {
+      method: "GET",
+      headers: { accept: "application/json", "x-cg-demo-api-key": this.apiKey },
+    };
+
+    const response = fetch(endpoint, options)
+      .then((res) => res.json() as any)
+      .then((json) => {
+        return json as CoinMarketChartResponse;
+      })
+      .catch<undefined>((err) => {
+        console.error(err);
+        return undefined;
+      });
+
+    return response;
+  }
+
+  async getOHLCHistoricalChart(
+    identifier: string,
+    days: number,
+    currency: string = "usd",
+  ): Promise<Array<Array<number>> | undefined> {
+    const endpoint =
+      this.api +
+      `coins/${identifier}/ohlc?vs_currency=${currency}&days=${days}`;
+    const options: RequestInit = {
+      method: "GET",
+      headers: { accept: "application/json", "x-cg-demo-api-key": this.apiKey },
+    };
+
+    const response = fetch(endpoint, options)
+      .then((res) => res.json() as any)
+      .then((json) => {
+        return json as Array<Array<number>>;
       })
       .catch<undefined>((err) => {
         console.error(err);
@@ -349,6 +401,12 @@ export interface DeveloperData {
 export interface CodeAdditionsDeletions4_Weeks {
   additions?: number;
   deletions?: number;
+}
+
+export interface CoinMarketChartResponse {
+  prices: Array<Array<number>>;
+  market_caps: Array<Array<number>>;
+  total_volumes: Array<Array<number>>;
 }
 
 /**

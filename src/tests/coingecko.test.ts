@@ -28,6 +28,20 @@ test("batch request", async () => {
 
   const tokens = await priceApi.getBatchMarketInfo(["bitcoin", "ethereum"]);
   expect(tokens).toBeTruthy();
+});
 
-  console.log(tokens);
+test("get historical chart info", async () => {
+  const priceApi = new CoingeckoPriceApi();
+
+  const chart = await priceApi.getHistoricalChart("bitcoin", 1);
+  expect(chart).toBeTruthy();
+});
+
+test("get ohlc historical chart info", async () => {
+  const priceApi = new CoingeckoPriceApi();
+
+  const chart = await priceApi.getOHLCHistoricalChart("bitcoin", 1);
+  expect(chart).toBeTruthy();
+
+  console.log(chart);
 });
