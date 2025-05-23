@@ -10,6 +10,7 @@ export class CoingeckoPriceApi {
     this.apiKey = apiKey;
   }
 
+  // generate a list of relevant tokens from coingecko
   async getTokenList(): Promise<CoingeckoSupportedTokens | undefined> {
     const tokenTickers: Set<string> = new Set();
     const duplicateTickers: Set<string> = new Set();
@@ -23,6 +24,21 @@ export class CoingeckoPriceApi {
       headers: { accept: "application/json", "x-cg-demo-api-key": this.apiKey },
     };
 
+    // gets top 100 tokens by market cap
+    const top200 = await this.getBatchMarketInfo([], "usd", 1);
+
+    if (top200) {
+      for (const token of top200) {
+        tokenTickers.add(token.ticker);
+
+        const coinInfo: CoingeckoTokenId = token;
+        console.log(coinInfo);
+        tokenNameToAddress[token.id] = coinInfo;
+        tokenTickerToAddress[token.ticker] = token;
+      }
+    }
+
+    // get tokens list and stash duplicate tickers for later resolution
     const tokenList = await fetch(endpoint, options)
       .then((res) => res.json() as any)
       .then((json) => {
@@ -75,7 +91,8 @@ export class CoingeckoPriceApi {
         this.api +
         `coins/markets?vs_currency=usd&symbols=${tickerResult}&include_tokens=top`;
 
-      /// sort-by market cap for tickers. Note: many wrapped tokens have market caps of 0.
+      console.log(dupEndpoint);
+      // sort-by market cap for tickers. Note: many wrapped tokens have market caps of 0.
       await fetch(dupEndpoint, options)
         .then((res) => res.json() as any)
         .then((json) => {
@@ -123,13 +140,15 @@ export class CoingeckoPriceApi {
   async getBatchMarketInfo(
     identifiers: string[],
     currency: string = "usd",
+    page: number = 1,
+    perPage: number = 200,
   ): Promise<CoinMarket[] | undefined> {
     if (identifiers.length > 100) {
       return undefined;
     }
     const endpoint =
       this.api +
-      `coins/markets?vs_currency=${currency}&ids=${identifiers.join(",")}`;
+      `coins/markets?vs_currency=${currency}&page=${page}&per_page=${perPage}&ids=${identifiers.join(",")}`;
     const options: RequestInit = {
       method: "GET",
       headers: { accept: "application/json", "x-cg-demo-api-key": this.apiKey },

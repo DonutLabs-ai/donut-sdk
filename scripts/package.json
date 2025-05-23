@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "token-list": "tsx getTokenList.ts"
+    "token-list": "tsx --env-file=.env getTokenList.ts"
   },
   "keywords": [],
   "author": "",
