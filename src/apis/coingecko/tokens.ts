@@ -29,12 +29,15 @@ export class CoingeckoPriceApi {
 
     if (top200) {
       for (const token of top200) {
-        tokenTickers.add(token.ticker);
+        tokenTickers.add(token.symbol);
 
-        const coinInfo: CoingeckoTokenId = token;
-        console.log(coinInfo);
-        tokenNameToAddress[token.id] = coinInfo;
-        tokenTickerToAddress[token.ticker] = token;
+        const coinInfo: CoingeckoTokenId = {
+          id: token.id,
+          symbol: token.symbol,
+          solana_address: "",
+        };
+        tokenNameToAddress[coinInfo.id] = coinInfo;
+        tokenTickerToAddress[coinInfo.symbol] = coinInfo;
       }
     }
 
@@ -46,7 +49,7 @@ export class CoingeckoPriceApi {
           if (item.platforms.solana) {
             const token: CoingeckoTokenId = {
               id: item.id,
-              ticker: item.symbol,
+              symbol: item.symbol,
               solana_address: "",
             };
             if (tokenTickers.has(item.symbol)) {
@@ -91,7 +94,6 @@ export class CoingeckoPriceApi {
         this.api +
         `coins/markets?vs_currency=usd&symbols=${tickerResult}&include_tokens=top`;
 
-      console.log(dupEndpoint);
       // sort-by market cap for tickers. Note: many wrapped tokens have market caps of 0.
       await fetch(dupEndpoint, options)
         .then((res) => res.json() as any)
@@ -228,7 +230,7 @@ export interface CoingeckoSupportedTokens {
 
 export interface CoingeckoTokenId {
   id: string;
-  ticker: string;
+  symbol: string;
   solana_address: string | null;
 }
 
