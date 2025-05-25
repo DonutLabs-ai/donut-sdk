@@ -2,4 +2,5 @@ onlyBuiltDependencies:
   - bigint-buffer
   - bufferutil
   - esbuild
+  - protobufjs
   - utf-8-validate
