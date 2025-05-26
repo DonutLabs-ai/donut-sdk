@@ -1,17 +1,18 @@
 # Donut SDK
 
-## Repo Structure
+[![NPM Version](https://badge.fury.io/js/donut-sdk.svg)](https://www.npmjs.com/package/donut-sdk)
 
 ## Donut Plugin
 
 `DonutPlugin` is a plugin for [solana-agent-kit](https://github.com/sendaifun/solana-agent-kit)
 
-The `DonutPlugin` aggregates many data providers for useful cryptocurrency metrics with a focus on solana.
+`DonutPlugin` aggregates many data providers for useful cryptocurrency metrics with a focus on solana.
 
 Example [MCP implemntation](https://github.com/DonutLabs-ai/mcp-solana-data/) that uses `DonutPlugin`
 
 ## Install and Use `DonutPlugin`
 
+### Add DonutPlugin to project
 ```bash
 npm install donut-sdk
 ```
@@ -41,15 +42,27 @@ const agent = new SolanaAgentKit(
 
 Go to [solana-agent-kit](https://github.com/sendaifun/solana-agent-kit) for docs on the full feature set of `SolanaAgentKit`
 
+## Repo Structure
+
+├── `scripts`: This is where useful scripts live (example: script to build json file of supported tokens)
+├── `src`: Top level directory in `donut-sdk`, this is what is included in npm package\
+    ├── `apis`: Logic for 3rd party apis and getting on-chain data
+    ├── `plugin`: `DonutPlugin` logic lives here
+
 ## Local Development
 
 To develop `donut-sdk` locally follow the steps below.
 
 ### Build Package
 
-1.  Clone repo
-2.  `pnpm install`
-3.  `pnpm build`
+Clone Repo
+
+```bash
+pnpm install
+```
+```bash
+pnpm build
+```
 
 ### Run Tests
 
