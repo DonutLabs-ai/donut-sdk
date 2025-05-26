@@ -13,6 +13,7 @@ Example [MCP implemntation](https://github.com/DonutLabs-ai/mcp-solana-data/) th
 ## Install and Use `DonutPlugin`
 
 ### Add DonutPlugin to project
+
 ```bash
 npm install donut-sdk
 ```
@@ -44,10 +45,12 @@ Go to [solana-agent-kit](https://github.com/sendaifun/solana-agent-kit) for docs
 
 ## Repo Structure
 
-├── `scripts`: This is where useful scripts live (example: script to build json file of supported tokens)
-├── `src`: Top level directory in `donut-sdk`, this is what is included in npm package\
-    ├── `apis`: Logic for 3rd party apis and getting on-chain data
-    ├── `plugin`: `DonutPlugin` logic lives here
+```
+├── scripts: Useful scripts not included in npm package (example: script to build json file of supported tokens)
+├── src: Top level directory in `donut-sdk`, this is what is included in npm package
+│   ├── apis: Logic for 3rd party apis and getting on-chain data
+│   ├── plugin: DonutPlugin code lives here
+```
 
 ## Local Development
 
@@ -55,11 +58,14 @@ To develop `donut-sdk` locally follow the steps below.
 
 ### Build Package
 
-Clone Repo
+```bash
+git clone https://github.com/DonutLabs-ai/donut-sdk.git
+```
 
 ```bash
 pnpm install
 ```
+
 ```bash
 pnpm build
 ```
