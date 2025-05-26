@@ -5183,7 +5183,7 @@ const getTokenInfoAction: Action = {
           },
           message: "Here is the full information of the requested token",
         },
-        explanation: "Receive market information for ray and solana",
+        explanation: "Receive market information for usdc",
       },
     ],
   ],

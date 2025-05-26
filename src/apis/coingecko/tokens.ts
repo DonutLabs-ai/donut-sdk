@@ -10,7 +10,7 @@ export class CoingeckoPriceApi {
     this.apiKey = apiKey;
   }
 
-  // generate a list of relevant tokens from coingecko
+  // generate a list of solana tokens from coingecko
   async getTokenList(): Promise<CoingeckoSupportedTokens | undefined> {
     const tokenTickers: Set<string> = new Set();
     const duplicateTickers: Set<string> = new Set();
@@ -27,6 +27,15 @@ export class CoingeckoPriceApi {
     // gets top 100 tokens by market cap
     const top200 = await this.getBatchMarketInfo([], "usd", 1);
 
+    // for non solana tokens, we need to map the token address to their wrapped wormhole addresses.
+    const specialAddresses: Record<string, string> = {
+      solana: "So11111111111111111111111111111111111111112",
+      bitcoin: "3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh",
+      ethereum: "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",
+      binancecoin: "9gP2kCy3wA1ctvYWQk75guqXuHfrEomqydHLtcTCqiLa",
+      tron: "GbbesPbaYh5uiAZSYNXTc7w9jty1rpg3P9L4JeN4LkKc",
+    };
+
     if (top200) {
       for (const token of top200) {
         tokenTickers.add(token.symbol);
@@ -36,8 +45,19 @@ export class CoingeckoPriceApi {
           symbol: token.symbol,
           solana_address: "",
         };
+
+        if (specialAddresses[coinInfo.id]) {
+          coinInfo.solana_address = specialAddresses[coinInfo.id];
+        }
+
         tokenNameToAddress[coinInfo.id] = coinInfo;
         tokenTickerToAddress[coinInfo.symbol] = coinInfo;
+        if (
+          coinInfo.solana_address !== "" &&
+          coinInfo.solana_address !== null
+        ) {
+          tokenAddressToName[coinInfo.solana_address] = coinInfo;
+        }
       }
     }
 
@@ -56,11 +76,11 @@ export class CoingeckoPriceApi {
               duplicateTickers.add(item.symbol);
             } else {
               tokenTickers.add(item.symbol);
+              token.solana_address = item.platforms.solana;
+              tokenAddressToName[item.platforms.solana] = token;
+              tokenTickerToAddress[item.symbol] = token;
+              tokenNameToAddress[item.id] = token;
             }
-            token.solana_address = item.platforms.solana;
-            tokenAddressToName[item.platforms.solana] = token;
-            tokenTickerToAddress[item.symbol] = token;
-            tokenNameToAddress[item.id] = token;
           }
         }
 

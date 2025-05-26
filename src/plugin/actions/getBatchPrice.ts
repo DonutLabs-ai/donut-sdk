@@ -11,7 +11,7 @@ const getTokenDataBatchAction: Action = {
     "get usdc and sol market information",
     "what is the price of moodeng, bonk and solana",
   ],
-  description: `This tool can be used to get the market data of tokens requested. This is useful for getting market data on many tokens at once. The input is an array of token identifiers which can be a token name, ticker or address.`,
+  description: `This tool can be used to get the market data of tokens requested. This is useful for getting market data on many tokens at once. The input is an array of token identifiers which can be a token name, ticker or address. Limit is 100 token at a time.`,
   examples: [
     [
       {

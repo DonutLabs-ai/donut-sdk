@@ -32,7 +32,7 @@ const getTokenListAction: Action = {
             "Here is the list of supported tokens with their ticker, name, and solana adress",
         },
         explanation:
-          "Receive the list of supported tokens, in this case only radium and wrapped solana",
+          "Receive the list of supported tokens, in this case only radium and wrapped solana, but list of supported tokens is typically much longer",
       },
     ],
   ],

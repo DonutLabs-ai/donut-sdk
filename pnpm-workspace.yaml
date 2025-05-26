@@ -4,3 +4,6 @@ onlyBuiltDependencies:
   - esbuild
   - protobufjs
   - utf-8-validate
+packages:
+  - 'src/**'
+  - '!scripts/**'
