@@ -38,12 +38,10 @@ export class CoingeckoPriceApi {
 
     if (top200) {
       for (const token of top200) {
-        tokenTickers.add(token.symbol);
-
         const coinInfo: CoingeckoTokenId = {
           id: token.id,
           symbol: token.symbol,
-          solana_address: "",
+          solana_address: token.solana_address ?? null,
         };
 
         if (specialAddresses[coinInfo.id]) {
@@ -51,7 +49,12 @@ export class CoingeckoPriceApi {
         }
 
         tokenNameToAddress[coinInfo.id] = coinInfo;
-        tokenTickerToAddress[coinInfo.symbol] = coinInfo;
+        if (tokenTickers.has(token.symbol)) {
+          duplicateTickers.add(token.symbol);
+        } else {
+          tokenTickers.add(token.symbol);
+          tokenTickerToAddress[coinInfo.symbol] = coinInfo;
+        }
         if (
           coinInfo.solana_address !== "" &&
           coinInfo.solana_address !== null
@@ -70,16 +73,19 @@ export class CoingeckoPriceApi {
             const token: CoingeckoTokenId = {
               id: item.id,
               symbol: item.symbol,
-              solana_address: "",
+              solana_address: item.platforms.solana,
             };
+
+            tokenNameToAddress[item.id] = token;
+            if (token.solana_address) {
+              tokenAddressToName[item.platforms.solana] = token;
+            }
+
             if (tokenTickers.has(item.symbol)) {
               duplicateTickers.add(item.symbol);
             } else {
               tokenTickers.add(item.symbol);
-              token.solana_address = item.platforms.solana;
-              tokenAddressToName[item.platforms.solana] = token;
               tokenTickerToAddress[item.symbol] = token;
-              tokenNameToAddress[item.id] = token;
             }
           }
         }

@@ -1,6 +1,6 @@
 {
   "name": "donut-sdk",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "Donut Devs",
   "description": "Donut SDK for crypto trading",
   "keywords": [
@@ -54,6 +54,7 @@
     "typescript": "^5.8.3",
     "vitest": "^3.1.3",
     "prettier": "^3.5.3",
-    "tsup": "^8.4.0"
+    "tsup": "^8.4.0",
+    "dotenv": "^16.4.5"
   }
 }
