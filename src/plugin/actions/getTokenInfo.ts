@@ -5188,7 +5188,9 @@ const getTokenInfoAction: Action = {
     ],
   ],
   schema: z.object({
-    token: z.string(),
+    token: z
+      .string()
+      .describe("The token ticker, name or mint address are all valid inputs"),
   }),
   handler: async (agent: SolanaAgentKit, input: Record<string, any>) => {
     try {

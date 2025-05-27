@@ -36,7 +36,9 @@ const getTokenListAction: Action = {
       },
     ],
   ],
-  schema: z.object({}),
+  schema: z
+    .object({})
+    .describe("no input needed. Will return list of supported tokens"),
   handler: async (_agent: SolanaAgentKit, input: Record<string, any>) => {
     try {
       const tokenList = getTokenList();

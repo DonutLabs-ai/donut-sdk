@@ -151,10 +151,28 @@ const transferUnsignedAction: Action = {
     ],
   ],
   schema: z.object({
-    from: z.string().min(32, "Invalid Solana address"),
-    to: z.string().min(32, "Invalid Solana address"),
-    amount: z.number().positive("Amount must be positive"),
-    mint: z.string().optional(),
+    from: z
+      .string()
+      .min(32, "Invalid Solana address")
+      .describe(
+        "The wallet address that will send the tokens, this is the wallet that will sign the transaction.",
+      ),
+    to: z
+      .string()
+      .min(32, "Invalid Solana address")
+      .describe("The wallet address that will recieve the tokens"),
+    amount: z
+      .number()
+      .positive("Amount must be positive")
+      .describe(
+        "The amount of tokens to send. This value is adjusted for by decimals. For example value of 0.2 input here would resolve to 0.2 sol",
+      ),
+    mint: z
+      .string()
+      .optional()
+      .describe(
+        "Token address. In the case of native sol (different than wrapped sol) leave this field empty",
+      ),
   }),
   handler: async (agent: SolanaAgentKit, input: Record<string, any>) => {
     try {

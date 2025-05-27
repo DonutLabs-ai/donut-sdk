@@ -161,7 +161,17 @@ const getTokenDataBatchAction: Action = {
     ],
   ],
   schema: z.object({
-    tokens: z.array(z.string()),
+    tokens: z
+      .array(
+        z
+          .string()
+          .describe(
+            "The token ticker, name or mint address are all valid inputs",
+          ),
+      )
+      .describe(
+        "A array of token ticker, name or address. The array can have tickers, names and mint addresses at the same time.",
+      ),
   }),
   handler: async (agent: SolanaAgentKit, input: Record<string, any>) => {
     try {

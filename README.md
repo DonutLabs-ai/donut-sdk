@@ -1,6 +1,6 @@
 # Donut SDK
 
-[![NPM Version](https://badge.fury.io/js/donut-sdk.svg)](https://www.npmjs.com/package/donut-sdk)
+[![NPM Version](https://badge.fury.io/js/donut-sdk.svg?)](https://www.npmjs.com/package/donut-sdk)
 
 ## Donut Plugin
 

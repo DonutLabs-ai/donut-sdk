@@ -29,21 +29,27 @@ test("test token list", async () => {
   );
 
   // address resolves correctly
-  expect(DonutPlugin.methods.supportedTokenAddress("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")).toEqual(
-    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  );
+  expect(
+    DonutPlugin.methods.supportedTokenAddress(
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    ),
+  ).toEqual("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
 
   // random address is undefined (changed last character of usdc address)
-  expect(DonutPlugin.methods.supportedTokenAddress("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt2v")).toBeUndefined()
+  expect(
+    DonutPlugin.methods.supportedTokenAddress(
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt2v",
+    ),
+  ).toBeUndefined();
 
   // usdt
   expect(DonutPlugin.methods.supportedTokenAddress("usdt")).toEqual(
-    "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
+    "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
   );
 
-    // usdt
+  // usdt
   expect(DonutPlugin.methods.supportedTokenAddress("bitcoin")).toEqual(
-    "3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh"
+    "3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh",
   );
 });
 

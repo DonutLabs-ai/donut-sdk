@@ -35,9 +35,20 @@ const quoteAction: Action = {
     ],
   ],
   schema: z.object({
-    outputMint: z.string().max(256, "Invalid output mint address"),
-    inputAmount: z.number().positive("Input amount must be positive"),
-    inputMint: z.string().max(256, "Invalid input mint address"),
+    outputMint: z
+      .string()
+      .max(256, "Invalid output mint address")
+      .describe("The token ticker, name or mint address are all valid inputs"),
+    inputAmount: z
+      .number()
+      .positive("Input amount must be positive")
+      .describe(
+        "The amount of the input token to swap. This value is raw amount and does not divide for decimals. Make sure to verify decimals are correct. For example imput of 1_000_000 would be equivalent to 1 SOL",
+      ),
+    inputMint: z
+      .string()
+      .max(256, "Invalid input mint address")
+      .describe("The token ticker, name or mint address are all valid inputs"),
   }),
   handler: async (_agent: SolanaAgentKit, input: Record<string, any>) => {
     try {

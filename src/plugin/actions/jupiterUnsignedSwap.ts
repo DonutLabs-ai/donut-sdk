@@ -40,10 +40,25 @@ const unsignedSwapAction: Action = {
     ],
   ],
   schema: z.object({
-    outputMint: z.string().max(100, "Invalid output mint address"),
-    inputAmount: z.number().positive("Input amount must be positive"),
-    inputMint: z.string().max(100, "Invalid input mint address"),
-    publicKey: z.string().min(32, "Invalid public key"),
+    outputMint: z
+      .string()
+      .max(100, "Invalid output mint address")
+      .describe("The token ticker, name or mint address are all valid inputs"),
+    inputAmount: z
+      .number()
+      .int("Input must be integer")
+      .positive("Input amount must be positive")
+      .describe(
+        "The amount of the input token to swap. This value is raw number used onchain and does not adjust for decimals. For example imput of 1_000_000 would be equivalent to 1 SOL.",
+      ),
+    inputMint: z
+      .string()
+      .max(100, "Invalid input mint address")
+      .describe("The token ticker, name or mint address are all valid inputs"),
+    publicKey: z
+      .string()
+      .min(32, "Invalid public key")
+      .describe("public key of the wallet that will sign transaction"),
   }),
   handler: async (_agent: SolanaAgentKit, input: Record<string, any>) => {
     try {
