@@ -19,7 +19,8 @@ import {
   donutFetchTokenDetailedReport,
   fetchSolsnifferReport,
 } from "./tools";
-import { Plugin } from "solana-agent-kit";
+import { Plugin, BaseWallet } from "solana-agent-kit";
+import { PublicKey, Transaction, VersionedTransaction } from "@solana/web3.js";
 
 const DonutPlugin = {
   name: "donut-plugin",
@@ -56,4 +57,23 @@ const DonutPlugin = {
   },
 } satisfies Plugin;
 
-export { DonutPlugin };
+function mockWalletThrowMessaage(): any {
+  throw "mockBaseWallet cannot sign transactions";
+}
+
+/**
+ * A mock wallet implementation that cannot sign transactions
+ */
+const mockBaseWallet: BaseWallet = {
+  publicKey: PublicKey.default,
+  signTransaction: <T extends Transaction | VersionedTransaction>(_tx: T) =>
+    mockWalletThrowMessaage(),
+  signMessage: (_message: Uint8Array) => mockWalletThrowMessaage(),
+  signAllTransactions: <T extends Transaction | VersionedTransaction>(
+    _transactions: T[],
+  ) => mockWalletThrowMessaage(),
+  signAndSendTransaction: (_tx: Transaction | VersionedTransaction) =>
+    mockWalletThrowMessaage(),
+};
+
+export { DonutPlugin, mockBaseWallet };

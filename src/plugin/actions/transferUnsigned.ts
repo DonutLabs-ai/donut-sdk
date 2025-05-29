@@ -171,7 +171,7 @@ const transferUnsignedAction: Action = {
       .string()
       .optional()
       .describe(
-        "Token address. In the case of native sol (different than wrapped sol) leave this field empty",
+        "The token ticker, name or mint address are all valid inputs. In the case of native sol (value of sol resolves to wrapped sol address) leave this field empty",
       ),
   }),
   handler: async (agent: SolanaAgentKit, input: Record<string, any>) => {
