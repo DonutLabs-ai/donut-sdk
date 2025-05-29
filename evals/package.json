@@ -1,0 +1,22 @@
+{
+  "name": "evals",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "eval": "npx mcp-evals ./evals.ts ./mcp-server.ts",
+    "start": "tsx ./mcp-server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+    "mcp-evals": "^1.0.18",
+    "@ai-sdk/openai": "^1.3.22",
+    "donut-sdk": "file:../dist"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.4"
+  }
+}
